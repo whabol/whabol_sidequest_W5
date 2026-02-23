@@ -25,6 +25,10 @@ let levelIndex = 0;
 let level;
 let player;
 let cam;
+let camGliding = false;
+
+let greenLevel = 0;
+let gameState = "start";
 
 function preload() {
   allLevelsData = loadJSON("levels.json"); // levels.json beside index.html [web:122]
@@ -42,26 +46,50 @@ function setup() {
 function loadLevel(i) {
   level = LevelLoader.fromLevelsJson(allLevelsData, i);
 
+  level.originalBg = level.theme.bg;
+
   player = new BlobPlayer();
   player.spawnFromLevel(level);
 
   cam.x = player.x - width / 2;
   cam.y = 0;
   cam.clampToWorld(level.w, level.h);
+
+  camGliding = true;
+  gameState = "playing";
 }
 
 function draw() {
+  if (camGliding) {
+    player.vx = 1.2;
+  }
+
+  if (gameState === "playing") {
+    if (keyIsDown(UP_ARROW)) {
+      greenLevel = min(greenLevel + 1, 255); //--changes the background colour greener every time the arrow up is pressed
+    }
+    level.theme.bg = color(20, 40 + greenLevel, 60);
+  }
+
   // --- game state ---
   player.update(level);
 
   // Fall death → respawn
   if (player.y - player.r > level.deathY) {
+    resetGame();
     loadLevel(levelIndex);
     return;
   }
 
+  if (camGliding) {
+    cam.x += 1.5; //---speed of camera---
+    player.vx = 1.2; //---blob moves with the camera---
+  } else {
+    cam.followSideScrollerX(player.x, level.camLerp);
+  }
+
   // --- view state (data-driven smoothing) ---
-  cam.followSideScrollerX(player.x, level.camLerp);
+
   cam.y = 0;
   cam.clampToWorld(level.w, level.h);
 
@@ -97,5 +125,15 @@ function keyPressed() {
   if (key === " " || key === "W" || key === "w" || keyCode === UP_ARROW) {
     player.tryJump();
   }
-  if (key === "r" || key === "R") loadLevel(levelIndex);
+  if (key === "r" || key === "R") {
+    resetGame();
+    loadLevel(levelIndex);
+    camGliding = false;
+  }
+}
+
+function resetGame() {
+  level.theme.bg = level.originalBg;
+  greenLevel = 0; // --- have the background reset when the game restarts ---
+  camGliding = false;
 }

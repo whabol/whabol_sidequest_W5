@@ -7,6 +7,8 @@ class WorldLevel {
       levelJson.theme ?? {},
     );
 
+    this.originalBg = this.theme.bg;
+
     // Physics knobs
     this.gravity = levelJson.gravity ?? 0.65;
     this.jumpV = levelJson.jumpV ?? -11.0;
@@ -28,14 +30,14 @@ class WorldLevel {
     );
   }
 
-drawWorld() {
-  background(this.theme.bg);
-  push();
-  rectMode(CORNER);          // critical: undo any global rectMode(CENTER) [web:230]
-  noStroke();
-  fill(this.theme.platform);
+  drawWorld() {
+    background(this.theme.bg);
+    push();
+    rectMode(CORNER); // critical: undo any global rectMode(CENTER) [web:230]
+    noStroke();
+    fill(this.theme.platform);
 
-  for (const p of this.platforms) rect(p.x, p.y, p.w, p.h); // x,y = top-left [web:234]
-  pop();
-}
+    for (const p of this.platforms) rect(p.x, p.y, p.w, p.h); // x,y = top-left [web:234]
+    pop();
+  }
 }
