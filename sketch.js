@@ -66,9 +66,9 @@ function draw() {
 
   if (gameState === "playing") {
     if (keyIsDown(UP_ARROW)) {
-      greenLevel = min(greenLevel + 1, 255); //--changes the background colour greener every time the arrow up is pressed
+      greenLevel = min(greenLevel + 1, 100); //--changes the background colour greener every time the arrow up is pressed
     }
-    level.theme.bg = color(20, 40 + greenLevel, 60);
+    level.theme.bg = color(20, 35 + greenLevel, 60);
   }
 
   // --- game state ---
@@ -83,7 +83,7 @@ function draw() {
 
   if (camGliding) {
     cam.x += 1.5; //---speed of camera---
-    player.vx = 1.2; //---blob moves with the camera---
+    player.vx = 2; //---blob moves with the camera---
   } else {
     cam.followSideScrollerX(player.x, level.camLerp);
   }
