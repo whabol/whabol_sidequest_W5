@@ -9,9 +9,9 @@ Winta Habol
 ---
 
 ## Description
-This p5.js project uses example 5, however I iterated the code for it to have a reactive camera experience that automatically scrolls through a world larger than the screen. The player has to 
+This p5.js project uses example 5, and I iterated the code for it to have a reactive camera experience that automatically scrolls through a world larger than the screen. The player has to 
 move the left arrow and up arrow to keep up with the screen. Not keeping up with the screen will result in the blob drifting behind evoking the emotion of feeling sad or tired, wheras clicking the 
-up arrow will evoke the background colour to get greener with displays blob being happy and successful.
+up arrow will evoke the background colour to get greener which displays blob being happy and successful.
 
 ---
 
